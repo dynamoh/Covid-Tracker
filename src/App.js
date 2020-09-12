@@ -3,10 +3,10 @@ import './App.css';
 import Header from './components/Header/Header';
 import Container from '@material-ui/core/Container';
 import HomePage from './components/Home/HomePage';
+import axios from 'axios'
 
 class App extends Component {
 
-  
   render () {
     return (
       <div className="App">

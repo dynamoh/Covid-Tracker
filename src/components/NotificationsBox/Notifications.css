@@ -1,0 +1,26 @@
+.notifications-table {
+    outline: none;
+    border: none !important;
+    box-shadow: none !important;
+    margin-top: 10px;
+}
+
+.notif-head {
+    margin-left: 10px;
+    color: black;
+    font-size: 26px;
+    opacity: 0.8;
+}
+
+.notif-link {
+    color: royalblue !important;
+    cursor: pointer;
+}
+
+.notif-link:hover {
+    text-decoration: underline;
+}
+
+.notif-head {
+    font-weight: 800 !important;
+}

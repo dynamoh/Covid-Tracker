@@ -10,4 +10,5 @@
     flex-shrink: 0;
     flex-direction: column;
     height: 60px;
+    position: fixed;
 }

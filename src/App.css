@@ -13,4 +13,6 @@
   flex: 1 1 0%;
   background-color: rgb(247, 249, 252);
   min-height: 100vh;
+  margin-top:7vh;
+  padding-bottom:80px;
 }

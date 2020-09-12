@@ -16,7 +16,7 @@ function InfoCard() {
             <Card className="info-card" >
                 <CardContent>
                     <Typography variant="h5" component="h2">
-                      be{bull}nev{bull}o{bull}lent
+                      Active Cases
                     </Typography>
                     <Typography color="textSecondary">
                       adjective
@@ -26,7 +26,7 @@ function InfoCard() {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Typography variant="h6" color="green" component="h6">
+                    <Typography variant="h6" color="error" component="h6">
                       + 14%
                     </Typography>
                 </CardActions>
