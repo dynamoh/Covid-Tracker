@@ -1,3 +1,38 @@
 .comparison-container {
-    padding: 25px;
+    padding: 25px 0px 25px 25px;
+}
+
+.right-graph-filters {
+    border-left:1px solid #e1e5eb!important;
+    background-color: #fbfbfb !important;
+    margin-top: -15.5px !important;
+    margin-bottom: -15.5px !important;
+    margin-left: 8px !important;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.MuiSelect-select {
+    padding-top: 0px !important;
+    padding-right:2px !important;
+    height:20px !important;
+    font-size: 14px !important;
+    width: 180px !important;
+    box-shadow: 0px 0px 4px 0px rgba(53, 64, 82, 0.1) !important;
+}
+
+.MuiAutocomplete-inputRoot:active {
+    outline:none !important;
+}
+
+.MuiSelect-outlined.MuiSelect-outlined {
+    height: 20px !important;
+    padding: 0px !important;
+    background-color: #fff !important;
+    /* padding: 6px 5px 4px 7px !important; */
+}
+
+.MuiOutlinedInput-root {
+    margin-top: 10px;
+    margin-right: 10px;
 }

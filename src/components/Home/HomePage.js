@@ -15,8 +15,6 @@ class HomePage extends Component {
 
     state = {
         labels: [],
-        sampleTested: [],
-        confirmedCases: [],
         mapCountries:[],
         countries:[],
         total:0,
@@ -28,30 +26,6 @@ class HomePage extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://api.rootnet.in/covid19-in/stats/history')
-        .then(response => {
-            const data = response.data.data;
-            this.setState({
-                labels: data.map((info) => info.day),
-                confirmedCases: data.map((info) => info.summary.total)
-            })
-        })
-        .catch(error => {
-            console.log(error);
-        })
-
-        axios.get('https://api.rootnet.in/covid19-in/stats/testing/history')
-        .then(response => {
-            const data = response.data.data;
-
-            this.setState({
-                sampleTested: data.map((info) => info.totalSamplesTested)
-            })
-        })
-        .catch(error => {
-            console.log(error);
-        })
-
         const getCountriesData = async () => {
             fetch("https://disease.sh/v3/covid-19/countries")
               .then((response) => response.json())
@@ -97,7 +71,7 @@ class HomePage extends Component {
     }
 
     render() {
-        const { labels, sampleTested, confirmedCases, total, recovered, deaths, itotal, irecovered, ideaths } = this.state;
+        const { labels, total, recovered, deaths, itotal, irecovered, ideaths } = this.state;
 
         return (
             <div>
@@ -145,7 +119,7 @@ class HomePage extends Component {
                     <Grid container spacing={2}>
 
                         <Grid container item xs={12}>
-                            <LineChart labels={labels} confirmedCases={confirmedCases} sampleTested={sampleTested} className="comparison-container" />
+                            <LineChart className="comparison-container" />
                         </Grid>
                         
                     </Grid>
@@ -170,11 +144,11 @@ class HomePage extends Component {
 
                 <div className="section-head3">
                     <Grid container spacing={2} >
-                        <Grid container item xs={6} >
+                        <Grid container item xs={12} >
                             <Hospitals />
                         </Grid>
                         
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12}>
                             <MedicalCollege />
                         </Grid>
                     </Grid>

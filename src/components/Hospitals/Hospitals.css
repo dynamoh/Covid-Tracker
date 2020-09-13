@@ -17,6 +17,7 @@
     height:40px !important;
     width: 180px !important;
     box-shadow: 0px 0px 4px 0px rgba(53, 64, 82, 0.1) !important;
+    
 }
 
 .MuiAutocomplete-inputRoot:active {
@@ -42,4 +43,9 @@
 .MuiOutlinedInput-root {
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.filter-label {
+    border-bottom:1px solid #e1e5eb!important;
+    margin-bottom: 10px;
 }
