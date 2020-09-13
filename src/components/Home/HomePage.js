@@ -6,6 +6,9 @@ import './HomePage.css'
 import axios from 'axios'
 import Notifications from '../NotificationsBox/Notifications';
 import Map from '../Map/Map';
+import Helpline from '../Helpline/Helpline';
+import MedicalCollege from '../MedicalCollege/MedicalCollege';
+import Hospitals from '../Hospitals/Hospitals';
 
 
 class HomePage extends Component {
@@ -102,13 +105,13 @@ class HomePage extends Component {
 
                     <Grid container spacing={2}>
 
-                        <Grid container item xs={5}>
+                        <Grid container item sm={5} xs={12} >
                             <div className="guidelines-container" >
                                 <Notifications />
                             </div>
                         </Grid>
 
-                        <Grid container item xs={7}>
+                        <Grid container item sm={7} xs={12} >
                             <Grid style={{ marginBottom: '18px' }} container item xs={12} spacing={2} >
                                 <Grid item xs={4}>
                                     <InfoCard title="Total Cases" type="infected" icount={itotal} count={total} color="primary"  />
@@ -151,23 +154,32 @@ class HomePage extends Component {
 
                 <div className="section-head3">
 
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2}>                        
 
-                        <Grid item xs={7}>
-                            <div className="hospitals-container" >
-                                
-                            </div>
+                        <Grid container item xs={5}>
+                            <Helpline />
                         </Grid>
 
-                        <Grid item xs={5}>
-                            <div className="colleges-container" >
-
-                            </div>
+                        <Grid container item xs={7}>
+                            <Helpline />
                         </Grid>
                         
                     </Grid>
 
                 </div>
+
+                <div className="section-head3">
+                    <Grid container spacing={2} >
+                        <Grid container item xs={6} >
+                            <Hospitals />
+                        </Grid>
+                        
+                        <Grid container item xs={6}>
+                            <MedicalCollege />
+                        </Grid>
+                    </Grid>
+                </div>
+
             </div>
         )
     }

@@ -21,7 +21,7 @@ function Notifications() {
         };
     
         fetchData();
-    }, [notifs]);
+    }, []);
 
     return (
         <div >
