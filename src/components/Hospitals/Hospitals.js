@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './Hospitals.css'
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import {
     MenuItem,
     FormControl,
@@ -63,27 +61,6 @@ function Hospitals() {
             </div>
 
             <div className="hospitals-filter">
-                {/* <Autocomplete
-                    id="free-solo-demo"
-                    freeSolo
-                    size="large"
-                    options={states}
-                    onInputChange={stateFilter} 
-                    renderInput={(params) => (
-                        <TextField {...params} placeholder="States/Territories" margin="normal" variant="outlined" />
-                    )}
-                />
-
-                <Autocomplete
-                    id="free-solo-demo1"
-                    freeSolo
-                    size="large"
-                    options={types}
-                    renderInput={(params) => (
-                        <TextField {...params} placeholder="Filter by type" margin="normal" variant="outlined" />
-                    )}
-                /> */}
-
                 <FormControl className="app__dropdown">
                     <Select
                         variant="outlined"
@@ -92,18 +69,6 @@ function Hospitals() {
                     >
                         {states.map((state) => (
                             <MenuItem value={state}>{state}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl className="app__dropdown">
-                    <Select
-                        variant="outlined"
-                        value={stype}
-                        onChange={typeFilter}
-                    >
-                        {types.map((type) => (
-                            <MenuItem value={type}>{type}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

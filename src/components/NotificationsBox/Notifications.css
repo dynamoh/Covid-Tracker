@@ -33,6 +33,20 @@
     background-color: white;
     height: 600px;
 }
+
+.table::-webkit-scrollbar {
+    width: 6px!important;
+    height: 6px!important;
+}
+
+.table::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.2);
+    border-radius: 15px;
+}
+
+.table::-webkit-scrollbar-track {
+    background: hsla(0,0%,100%,.1);
+}
   
 /* .table tr {
     display: flex;
