@@ -5,29 +5,33 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import CountUp from 'react-countup'
 
-function InfoCard() {
-
-    const bull = <span>•</span>;
+function InfoCard(props) {
 
     return (
         <div className="info-card-box" >
-            <Card className="info-card" >
+            <Card className={`info-card ${props.type}`} >
                 <CardContent>
-                    <Typography variant="h5" component="h2">
-                      Active Cases
-                    </Typography>
-                    <Typography color="textSecondary">
-                      adjective
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      well meaning and kindly.
+                    <Typography color="textSecondary" style={{ fontSize: '18px' }} gutterBottom>{props.title}</Typography>
+                    <Typography variant ="h5">
+                        <CountUp 
+                            start={0}
+                            end={props.count}
+                            duration={6}
+                            separator=","
+                        />
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Typography variant="h6" color="error" component="h6">
-                      + 14%
+                    <Typography color={`${props.color}`}> 
+                        +
+                        <CountUp 
+                            start={0}
+                            end={props.icount}
+                            duration={3}
+                            separator=","
+                        />
                     </Typography>
                 </CardActions>
             </Card>

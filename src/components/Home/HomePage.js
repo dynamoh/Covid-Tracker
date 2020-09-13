@@ -16,6 +16,12 @@ class HomePage extends Component {
         confirmedCases: [],
         mapCountries:[],
         countries:[],
+        total:0,
+        recovered:0,
+        deaths:0,
+        itotal: 0,
+        irecovered: 0,
+        ideaths: 0,
     }
 
     componentDidMount() {
@@ -34,7 +40,7 @@ class HomePage extends Component {
         axios.get('https://api.rootnet.in/covid19-in/stats/testing/history')
         .then(response => {
             const data = response.data.data;
-            console.log(data)
+
             this.setState({
                 sampleTested: data.map((info) => info.totalSamplesTested)
             })
@@ -58,10 +64,37 @@ class HomePage extends Component {
                 });
               });
         };
+        getCountriesData();
+
+        axios.get('https://disease.sh/v3/covid-19/countries/india')
+        .then(response => {
+            const cases = response.data.cases;
+            const todayCases = response.data.todayCases;
+
+            const recovered = response.data.recovered;
+            const todayRecovered = response.data.todayRecovered;
+
+            const deaths = response.data.deaths;
+            const todayDeaths = response.data.todayDeaths;
+
+            this.setState({
+                total:cases,
+                recovered:recovered,
+                deaths:deaths,
+                itotal: todayCases,
+                irecovered: todayRecovered,
+                ideaths: todayDeaths,
+            })
+            
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
     }
 
     render() {
-        const { labels, sampleTested, confirmedCases } = this.state;
+        const { labels, sampleTested, confirmedCases, total, recovered, deaths, itotal, irecovered, ideaths } = this.state;
 
         return (
             <div>
@@ -69,23 +102,35 @@ class HomePage extends Component {
 
                     <Grid container spacing={2}>
 
-                        <Grid container item xs={5} spacing={2}>
-                            <Grid item xs={6}>
-                                <InfoCard />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InfoCard />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InfoCard />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <InfoCard />
-                            </Grid>
+                        <Grid container item xs={5}>
+                            <div className="guidelines-container" >
+                                <Notifications />
+                            </div>
                         </Grid>
 
-                        <Grid item xs={7}>
-                            <LineChart labels={labels} confirmedCases={confirmedCases} sampleTested={sampleTested} className="comparison-container" />
+                        <Grid container item xs={7}>
+                            <Grid style={{ marginBottom: '18px' }} container item xs={12} spacing={2} >
+                                <Grid item xs={4}>
+                                    <InfoCard title="Total Cases" type="infected" icount={itotal} count={total} color="primary"  />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <InfoCard title="Recoveries" type="recovered" icount={irecovered} count={recovered} color="secondary"  />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <InfoCard title="Deaths" type="deaths" icount={ideaths} count={deaths} color="error" />
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="map-container" >
+                                    <Map
+                                        countries={this.state.mapCountries}
+                                        casesType={"cases"}
+                                        center={{ lat: 20, lng: 77 }}
+                                        zoom={3.6}
+                                    />
+                                </div>
+                            </Grid>
+                            
                         </Grid>
                         
                     </Grid>
@@ -96,21 +141,8 @@ class HomePage extends Component {
 
                     <Grid container spacing={2}>
 
-                        <Grid item xs={7}>
-                            <div className="map-container" >
-                                {/* <Map
-                                    countries={this.state.mapCountries}
-                                    casesType={"cases"}
-                                    center={{ lat: 34.80746, lng: -40.4796 }}
-                                    zoom={3}
-                                /> */}
-                            </div>
-                        </Grid>
-
-                        <Grid item xs={5}>
-                            <div className="guidelines-container" >
-                                <Notifications />
-                            </div>
+                        <Grid container item xs={12}>
+                            <LineChart labels={labels} confirmedCases={confirmedCases} sampleTested={sampleTested} className="comparison-container" />
                         </Grid>
                         
                     </Grid>

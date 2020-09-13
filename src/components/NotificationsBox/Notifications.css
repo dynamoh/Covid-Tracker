@@ -23,4 +23,38 @@
 
 .notif-head {
     font-weight: 800 !important;
+    padding-top: 20px;
+}
+
+.table {
+    margin-top: 20px;
+    overflow: auto;
+    color: #6a5d5d;
+    background-color: white;
+    height: 600px;
+}
+  
+/* .table tr {
+    display: flex;
+    justify-content: space-evenly;
+} */
+  
+.table td {
+    padding: 0.9rem;
+    border: none;
+}
+  
+.table tr:nth-of-type(odd) {
+    background-color: #f3f2f8;
+}
+
+.notif-link {
+    cursor: pointer;
+    color: black !important;
+    opacity: 0.9;
+    text-decoration: none !important;
+}
+
+.notif-date {
+    font-weight: 600;
 }
