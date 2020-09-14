@@ -9,6 +9,11 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 from django.db.models import Q
 
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+import os
+from django.core.mail import EmailMessage
+
 from .models import PatientInfo
 from .serializers import PatientsSerializer
 
@@ -83,3 +88,33 @@ class AddPatientsInfoView(APIView):
             }
 
             return Response(response, status=HTTP_400_BAD_REQUEST)
+
+class sendMail(APIView):
+    """
+    Send graph on user email.
+    """
+
+    def post(self, request, *args, **kwargs):
+
+        email = request.data.get('email')
+        file_pdf = request.data.get('file')
+
+        current_site = get_current_site(request)
+
+        mail_subject = '[noreply] Thank you for subscribing at TRIIII'
+        msg = 'Thank you for Visiting the site.'
+
+        message = render_to_string('deceased_stats.html', {
+            'domain': current_site.domain,
+            'msg':msg,
+        })
+        
+        to_email = email
+        email = EmailMessage(
+                    mail_subject, message, to=[to_email]
+        )
+
+        email.attach('deceased_stats.pdf', file_pdf.read(), 'application/pdf')
+        email.send()
+
+        return Response({'message':'success', 'body':[]}, status=HTTP_200_OK)
