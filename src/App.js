@@ -3,7 +3,6 @@ import './App.css';
 import Header from './components/Header/Header';
 import Container from '@material-ui/core/Container';
 import HomePage from './components/Home/HomePage';
-import axios from 'axios'
 import 'leaflet/dist/leaflet.css'
 
 class App extends Component {

@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react'
 import './LineChart.css'
 import axios from 'axios'
 import Grid from '@material-ui/core/Grid';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
+import TextField from '@material-ui/core/TextField';
 import {
     MenuItem,
     FormControl,
     Select,
-    Card,
-    CardContent,
 } from "@material-ui/core";
+import html2canvas from "html2canvas";
+import pdfConverter from "jspdf";
 
 function LineChart(props) {
 
@@ -19,7 +20,9 @@ function LineChart(props) {
     const [sstate, setSstate] = useState("INDIA");
     const [sgender, setSgender] = useState("All");
     const [sage, setSAge] = useState("All");
-    const [gender, setGender] = useState(["All","Female", "Male", "Other"]);
+    const [sdate, setSdate] = useState("");
+    const [edate, setEdate] = useState("");
+    const [gender, setGender] = useState(["All","female", "male", "other"]);
     const [age, setAge] = useState(["All", "0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70+"]);
 
     useEffect(() => {
@@ -54,16 +57,41 @@ function LineChart(props) {
                     })
                 }
 
+                const final_data = [];
                 if(patients.length > 0) {
-                    var dt = new Date(patients[0].date);
-                    dt.setDate( dt.getDate() - 1 );
-                    patients.unshift({
-                        'date':dt.toISOString().split('T')[0],
-                        'value':0,
+
+                    final_data.push({
+                        'date': patients[0].date,
+                        'value': patients[0].value,
                     })
+                    
+                    for(let i=0; i<patients.length-1;i++) {
+                        var dt = new Date(patients[i].date);
+                        var ed = new Date(patients[i+1].date);
+                        dt.setDate( dt.getDate() + 1 );
+
+                        var diff = (ed.getTime() - dt.getTime())/(1000 * 3600 * 24);
+                        
+                        while (diff > 0) {
+                            final_data.push({
+                                'date':dt.toISOString().split('T')[0],
+                                'value':0
+                            })
+                            dt.setDate( dt.getDate() + 1 );
+                            diff -= 1;
+                        }
+
+                        final_data.push({
+                            'date':ed.toISOString().split('T')[0],
+                            'value': patients[i+1].value,
+                        })
+
+                    }
+                    setSdate(final_data[0].date);
+                    setEdate(final_data[final_data.length-1].date);
                 }
 
-                setDeceased(patients);
+                setDeceased(final_data);
                 setOriginal(data);
             })
             .catch(error => {
@@ -77,26 +105,46 @@ function LineChart(props) {
 
     const stateFilter = (e) => {
         setSstate(e.target.value);
-        const search = e.target.value;
+        filterData(sdate, edate, sage, sgender, e.target.value);
     }
 
     const genderFilter = (e) => {
         setSgender(e.target.value);
-        const search = e.target.value;
+        filterData(sdate, edate, sage, e.target.value, sstate);
     }
 
     const ageFilter = (e) => {
         setSAge(e.target.value);
-        const search = e.target.value;
-        let sg = sgender;
-        let ss = sstate;
+        filterData(sdate, edate, e.target.value, sgender, sstate);
+    }
 
-        let sta = search.split("-")[0];
-        let eda = search.split("-")[1];
+    const startDateFilter = (e) => {
+        setSdate(e.target.value);
+        filterData(e.target.value, edate, sage, sgender, sstate);
+    }
+
+    const endDateFilter = (e) => {
+        setEdate(e.target.value);
+        filterData(sdate, e.target.value, sage, sgender, sstate);
+    }
+
+    const filterData = (start_date, end_date, age, gender, state) => {
+        var stdate = start_date;
+        var eddate = end_date;
+
+        const sa = age;
+        let sg = gender;
+        let ss = state;
+
+        let sta = sa.split("-")[0];
+        let eda = sa.split("-")[1];
 
         let filteredData = [];
 
-        if(search === '70+') {
+        if(sa === 'All') {
+            filteredData = original;
+        }
+        else if(sa === '70+') {
             filteredData = original.filter(data => {
                 if(data.age >= 70 ) {
                     return true
@@ -133,6 +181,13 @@ function LineChart(props) {
             })
         }
 
+        filteredData = filteredData.filter(data => {
+            if(data.reported_on >= stdate && data.reported_on<= eddate) {
+                return true
+            }
+            return false
+        })
+
         const patientData = filteredData.reduce((deceased, { reported_on }) => {
             if (!deceased[reported_on]) deceased[reported_on] = 0;
             deceased[reported_on] += 1;
@@ -147,30 +202,70 @@ function LineChart(props) {
             })
         }
 
+        const final_data = [];
         if(patients.length > 0) {
-            var dt = new Date(patients[0].date);
-            dt.setDate( dt.getDate() - 1 );
-            patients.unshift({
-                'date':dt.toISOString().split('T')[0],
-                'value':0,
+
+            final_data.push({
+                'date': patients[0].date,
+                'value': patients[0].value,
             })
+            
+            for(let i=0; i<patients.length-1;i++) {
+                var dt = new Date(patients[i].date);
+                var ed = new Date(patients[i+1].date);
+                dt.setDate( dt.getDate() + 1 );
+
+                var diff = (ed.getTime() - dt.getTime())/(1000 * 3600 * 24);
+                
+                while (diff > 0) {
+                    final_data.push({
+                        'date':dt.toISOString().split('T')[0],
+                        'value':0
+                    })
+                    dt.setDate( dt.getDate() + 1 );
+                    diff -= 1;
+                }
+
+                final_data.push({
+                    'date':ed.toISOString().split('T')[0],
+                    'value': patients[i+1].value,
+                })
+
+            }
+            setSdate(final_data[0].date);
+            setEdate(final_data[final_data.length-1].date);
         }
 
-        setDeceased(patients);
+        setDeceased(final_data);
     }
 
-    const dateFilter = (e) => {
-        // setSstate(e.target.value);
-        // const search = e.target.value;
-    }
+    const div2PDF = (e) => {
+        let input = document.getElementsByClassName("left-graph-container")[0];
+        console.log(input);
+        html2canvas(input).then(canvas => {
+          const img = canvas.toDataURL("image/png");
+          const pdf = new pdfConverter("l", "pt");
 
-    console.log(deceased);
+          pdf.addImage(
+            img,
+            "png",
+            input.offsetLeft,
+            input.offsetTop,
+            input.clientWidth,
+            input.clientHeight
+          );
+
+          console.log(pdf);
+          pdf.save("deceased_stats.pdf");
+        });
+    };
+
 
     return (
         <div className="comparison-container" >
 
             <Grid container spacing={2}>
-                <Grid className="left-graph-container" item container xs={10} spacing={2} >
+                <Grid id="deceased-stats-graph" className="left-graph-container" item container xs={10} spacing={2} >
                     <Line 
                         data = {{
                             labels: deceased.map(data => data.date),
@@ -185,7 +280,10 @@ function LineChart(props) {
                     />
                 </Grid>
 
-                <Grid className="right-graph-filters" item container xs={2}>
+                <Grid className="right-graph-filters" style={{ position:'relative' }} item container xs={2}>
+                    <span style={{ position: 'absolute', right:'16px', top: '8px', cursor:'pointer' }} >
+                        <i onClick={div2PDF} class="fas fa-download"></i>
+                    </span>
                     <FormControl style={{ marginTop: '25px', marginLeft: '5px' }} className="app__dropdown">
                         <label>Select State</label>
                         <Select
@@ -224,25 +322,39 @@ function LineChart(props) {
                         <br />
 
                         <label>Select date range</label>
-                        <Select
+                        <TextField
+                            id="start_date"
                             variant="outlined"
-                            value={sstate}
-                            onChange={stateFilter}
-                        >
-                            {states.map((state) => (
-                                <MenuItem value={state}>{state}</MenuItem>
-                            ))}
-                        </Select>
+                            type="date"
+                            value={sdate}
+                            maxValue={edate}
+                            onChange={startDateFilter}
+                            InputLabelProps={{
+                                shrink: false,
+                            }}
+                        />
 
-                        <Select
-                            variant="outlined"
+                        {/* <Select
+                            
                             value={sstate}
                             onChange={stateFilter}
                         >
                             {states.map((state) => (
                                 <MenuItem value={state}>{state}</MenuItem>
                             ))}
-                        </Select>
+                        </Select> */}
+
+                        <TextField
+                            id="end_date"
+                            variant="outlined"
+                            type="date"
+                            minValue = {sdate}
+                            value={edate}
+                            onChange={endDateFilter}
+                            InputLabelProps={{
+                                shrink: false,
+                            }}
+                        />
 
                     </FormControl>
                 </Grid>

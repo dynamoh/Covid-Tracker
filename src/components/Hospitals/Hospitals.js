@@ -5,8 +5,6 @@ import {
     MenuItem,
     FormControl,
     Select,
-    Card,
-    CardContent,
 } from "@material-ui/core";
 
 function Hospitals() {
@@ -49,15 +47,11 @@ function Hospitals() {
         setHospitals(stateFiltered);
     }
 
-    const typeFilter = (e) => {
-        setStype(e.target.value);
-    }
-
     return (
         <div className="colleges-container">
 
             <div clasName="hospitals-head">
-                <h3 className="notif-head" > Hospitals & Beds </h3>
+                <h3 className="notif-head" > <i class="fas fa-procedures" style={{ marginRight: '15px' }} ></i> Hospitals & Beds </h3>
             </div>
 
             <div className="hospitals-filter">

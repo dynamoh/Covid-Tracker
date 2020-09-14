@@ -36,3 +36,11 @@
     margin-top: 10px;
     margin-right: 10px;
 }
+
+.MuiInputBase-input  {
+    height: 25px !important;
+    padding:8px 5px 8px 15px !important;
+    background-color: #fff !important;
+    box-shadow: 0px 0px 4px 0px rgba(53, 64, 82, 0.1) !important;
+    font-size: 16px !important;
+}

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './Notifications.css'
-import numeral from 'numeral'
 import axios from 'axios';
 import Tooltip from '@material-ui/core/Tooltip';
-import Button from '@material-ui/core/Button';
 
 function Notifications() {
 
@@ -25,13 +23,13 @@ function Notifications() {
 
     return (
         <div >
-            <h3 className="notif-head" >Notifications & Adviseries</h3>
+            <h3 className="notif-head" > <i class="fas fa-bullhorn" style={{ marginRight: '15px' }} ></i> Notifications & Adviseries</h3>
             <div className="table">
                 {notifs.map((notif) => {
                     const ln = notif.title.length;
                     const title = notif.title.substr(11,ln).trim();
 
-                    if(notif.title.split(" ")[0].length == 10) {
+                    if(notif.title.split(" ")[0].length === 10) {
                         return (
                             <tr>
                                 <td className="notif-date" > {

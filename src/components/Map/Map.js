@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Map as LeafletMap, TileLayer } from "react-leaflet";
 import "./Map.css";
 import { showDataOnMap } from "../../util";

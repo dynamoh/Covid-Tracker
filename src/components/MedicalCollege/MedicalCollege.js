@@ -81,11 +81,11 @@ function MedicalCollege() {
         const search = e.target.value;
         let stSearch = sstate;
 
-        if(stSearch == 'INDIA') {
+        if(stSearch === 'INDIA') {
             stSearch = ''
         }
 
-        if(search == "All") {
+        if(search === "All") {
             const stateFiltered = orginalMedicals.filter(medical => {
                 if(medical.state.includes(stSearch)){
                     return true
@@ -109,7 +109,7 @@ function MedicalCollege() {
         <div className="colleges-container">
 
             <div clasName="hospitals-head">
-                <h3 className="notif-head" > Medical Colleges & Beds </h3>
+                <h3 className="notif-head" > <i class="fas fa-hospital-alt" style={{ marginRight: '15px' }} ></i> Medical Colleges & Beds </h3>
             </div>
 
             <div className="hospitals-filter">

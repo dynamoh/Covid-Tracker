@@ -130,11 +130,11 @@ class HomePage extends Component {
 
                     <Grid container spacing={2}>                        
 
-                        <Grid container item xs={5}>
-                            <Helpline />
+                        <Grid container item xs={8}>
+                            <MedicalCollege />
                         </Grid>
 
-                        <Grid container item xs={7}>
+                        <Grid container item xs={4}>
                             <Helpline />
                         </Grid>
                         
@@ -148,9 +148,7 @@ class HomePage extends Component {
                             <Hospitals />
                         </Grid>
                         
-                        <Grid container item xs={12}>
-                            <MedicalCollege />
-                        </Grid>
+                        
                     </Grid>
                 </div>
 
