@@ -39,7 +39,7 @@ function Notifications() {
                                 <td>
                                    
                                     <Tooltip title="click to view details" placement="right">
-                                        <a className="notif-link"  href={notif.link} >
+                                        <a className="notif-link" target="_blank" href={notif.link} >
                                             {title}
                                         </a>
                                     </Tooltip>

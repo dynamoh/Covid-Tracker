@@ -232,8 +232,11 @@ function LineChart(props) {
                 })
 
             }
-            setSdate(final_data[0].date);
-            setEdate(final_data[final_data.length-1].date);
+
+            if(final_data.length > 1) {
+                setSdate(final_data[0].date);
+                setEdate(final_data[final_data.length-1].date);
+            }
         }
 
         setDeceased(final_data);
