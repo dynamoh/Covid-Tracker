@@ -114,8 +114,6 @@ class sendMail(APIView):
         email = EmailMessage(
                     mail_subject, message, to=[to_email]
         )
-
-        email.attach('deceased_stats.pdf', file_pdf.read(), 'application/pdf')
         email.send()
 
         return Response({'message':'success', 'body':[]}, status=HTTP_200_OK)
