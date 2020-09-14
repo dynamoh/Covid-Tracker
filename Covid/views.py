@@ -97,8 +97,9 @@ class sendMail(APIView):
     def post(self, request, *args, **kwargs):
 
         email = request.data.get('email')
-        file_pdf = request.data.get('file')
+        file_pdf = request.FILES.get('file')
 
+        print(email, file_pdf)
         current_site = get_current_site(request)
 
         mail_subject = '[noreply] Thank you for subscribing at TRIIII'
