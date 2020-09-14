@@ -39,7 +39,7 @@ function LineChart(props) {
                 console.log(error);
             })
 
-            axios.post('http://127.0.0.1:8000/api/patients/get-info/', {'status':'Deceased'})
+            axios.post('https://covid-tracker-server.herokuapp.com/api/patients/get-info/', {'status':'Deceased'})
             .then(response => {
                 const data = response.data.body;
                 console.log(data);
