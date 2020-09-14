@@ -97,7 +97,7 @@ class sendMail(APIView):
     def post(self, request, *args, **kwargs):
 
         email = request.data.get('email')
-        file_pdf = statsFile.objects.all().first()
+        file_pdf = statsFile.objects.all().first().file
 
         print(email)
         current_site = get_current_site(request)
@@ -117,8 +117,9 @@ class sendMail(APIView):
     
         try:
             email.attach('deceased_stats.pdf', file_pdf.read(), 'application/pdf')
-            email.send()
         except Exception as e:
             print(e)
+        
+        email.send()
 
         return Response({'message':'success', 'body':[]}, status=HTTP_200_OK)
