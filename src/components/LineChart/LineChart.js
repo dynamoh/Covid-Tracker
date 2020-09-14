@@ -7,10 +7,12 @@ import TextField from '@material-ui/core/TextField';
 import {
     MenuItem,
     FormControl,
-    Select,
+    Select, Button
 } from "@material-ui/core";
 import html2canvas from "html2canvas";
 import pdfConverter from "jspdf";
+import Tooltip from '@material-ui/core/Tooltip';
+import Modal from '@material-ui/core/Modal';
 
 function LineChart(props) {
 
@@ -126,6 +128,37 @@ function LineChart(props) {
     const endDateFilter = (e) => {
         setEdate(e.target.value);
         filterData(sdate, e.target.value, sage, sgender, sstate);
+    }
+
+    const resetData = (e) => {
+        setEdate(original[original.length-1].date);
+        setSdate(original[0].date);
+        setSgender("All");
+        setSAge("All");
+        setSstate("INDIA");
+        
+        filterData(original[0].reported_on, original[original.length-1].reported_on, "All", "All", "INDIA");
+    }
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        // var email = document.getElementById('email-value').value;
+
+        window.Email.send({
+            SecureToken : "4d112239-dab7-47ed-a2e6-1073875ac6e8",
+            To : 'guptaheet54@gmail.com',
+            From : "guptaheet55@gmail.com",
+            Subject : "This is the subject",
+            Body : "And this is the body",
+            Attachments : [
+            {
+                name : "smtpjs.png",
+                path : "https://networkprogramming.files.wordpress.com/2017/11/smtpjs.png"
+            }]
+        }).then(
+          message => alert(message)
+        );
     }
 
     const filterData = (start_date, end_date, age, gender, state) => {
@@ -258,7 +291,6 @@ function LineChart(props) {
             input.clientHeight
           );
 
-          console.log(pdf);
           pdf.save("deceased_stats.pdf");
         });
     };
@@ -284,9 +316,19 @@ function LineChart(props) {
                 </Grid>
 
                 <Grid className="right-graph-filters" style={{ position:'relative' }} item container xs={2}>
-                    <span style={{ position: 'absolute', right:'16px', top: '8px', cursor:'pointer' }} >
-                        <i onClick={div2PDF} class="fas fa-download"></i>
-                    </span>
+
+                    <Tooltip title="download graph" placement="right">
+                        <span style={{ position: 'absolute', right:'16px', top: '8px', cursor:'pointer' }} >
+                            <i onClick={div2PDF} class="fas fa-download"></i>
+                        </span>
+                    </Tooltip>
+
+                    <Tooltip title="reset" placement="right">
+                        <span style={{ position: 'absolute', right:'50px', top: '8px', cursor:'pointer' }} >
+                            <i onClick={resetData} class="fas fa-undo"></i>
+                        </span>
+                    </Tooltip>
+
                     <FormControl style={{ marginTop: '25px', marginLeft: '5px' }} className="app__dropdown">
                         <label>Select State</label>
                         <Select
@@ -359,9 +401,17 @@ function LineChart(props) {
                             }}
                         />
 
+                        <br />
+                        <label>Send graph on email</label>
+                        <TextField id="outlined-search email-value" label="Enter you email" type="search" variant="outlined" />
+                        <Button onClick={sendEmail} variant="contained" color="primary" >Submit</Button>
+                        
                     </FormControl>
                 </Grid>
             </Grid>
+
+            
+            
 
             
         </div>

@@ -1,12 +1,13 @@
 .comparison-container {
-    padding: 25px 0px 25px 25px;
+    padding: 54px 0px 25px 25px;
+    height:550px !important;
 }
 
 .right-graph-filters {
     border-left:1px solid #e1e5eb!important;
     background-color: #fbfbfb !important;
-    margin-top: -15.5px !important;
-    margin-bottom: -15.5px !important;
+    margin-top: -45.5px !important;
+    margin-bottom: -85.5px !important;
     margin-left: 8px !important;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
