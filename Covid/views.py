@@ -6,7 +6,7 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.shortcuts import get_object_or_404
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django.db.models import Q
 
 from django.contrib.sites.shortcuts import get_current_site
@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 import os
 from django.core.mail import EmailMessage
 
-from .models import PatientInfo
+from .models import PatientInfo, statsFile
 from .serializers import PatientsSerializer
 
 class GetPatientsInfoView(APIView):
@@ -97,9 +97,9 @@ class sendMail(APIView):
     def post(self, request, *args, **kwargs):
 
         email = request.data.get('email')
-        file_pdf = request.FILES.get('file')
+        file_pdf = statsFile.objects.all().first()
 
-        print(email, file_pdf)
+        print(email)
         current_site = get_current_site(request)
 
         mail_subject = '[noreply] Thank you for subscribing at TRIIII'
@@ -114,6 +114,11 @@ class sendMail(APIView):
         email = EmailMessage(
                     mail_subject, message, to=[to_email]
         )
-        email.send()
+    
+        try:
+            email.attach('deceased_stats.pdf', file_pdf.read(), 'application/pdf')
+            email.send()
+        except Exception as e:
+            print(e)
 
         return Response({'message':'success', 'body':[]}, status=HTTP_200_OK)

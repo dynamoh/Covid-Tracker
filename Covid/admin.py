@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PatientInfo
+from .models import PatientInfo, statsFile
 
 @admin.register(PatientInfo)
 class PatientInfoAdmin(admin.ModelAdmin):
@@ -10,6 +10,7 @@ class PatientInfoAdmin(admin.ModelAdmin):
     ordering = ('reported_on',)
     filter_horizontal = ()
 
+admin.site.register(statsFile)
 
 admin.site.site_header = 'Covid Patients Tracker (CPT)'
 admin.site.site_title = 'CPT Admin Portal'

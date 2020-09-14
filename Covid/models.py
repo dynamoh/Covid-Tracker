@@ -18,3 +18,6 @@ class PatientInfo(models.Model):
 
     def __str__(self):
         return str(self.patient_id)
+
+class statsFile(models.Model):
+    file = models.FileField()
