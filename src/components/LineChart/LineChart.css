@@ -45,3 +45,16 @@
     box-shadow: 0px 0px 4px 0px rgba(53, 64, 82, 0.1) !important;
     font-size: 16px !important;
 }
+
+.email-box {
+    width:85% !important;
+    padding: 10px 5px 10px 13px !important;
+    background-color: #fff !important;
+    box-shadow: 0px 0px 4px 0px rgba(53, 64, 82, 0.1) !important;
+    font-size: 16px !important;
+    border-radius: 4px;
+    border: 1px solid rgb(158, 158, 158, 0.8) !important;
+    outline: none;
+    margin-bottom: 15px;
+    margin-top: 4px;
+}

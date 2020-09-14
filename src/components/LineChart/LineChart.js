@@ -10,9 +10,8 @@ import {
     Select, Button
 } from "@material-ui/core";
 import html2canvas from "html2canvas";
-import pdfConverter from "jspdf";
+import jsPDF from "jspdf";
 import Tooltip from '@material-ui/core/Tooltip';
-import Modal from '@material-ui/core/Modal';
 
 function LineChart(props) {
 
@@ -24,6 +23,7 @@ function LineChart(props) {
     const [sage, setSAge] = useState("All");
     const [sdate, setSdate] = useState("");
     const [edate, setEdate] = useState("");
+    const [email, setEmail] = useState("");
     const [gender, setGender] = useState(["All","female", "male", "other"]);
     const [age, setAge] = useState(["All", "0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70+"]);
 
@@ -142,23 +142,34 @@ function LineChart(props) {
 
     const sendEmail = (e) => {
         e.preventDefault();
+        var email = window.document.getElementById('email-value').value;
 
-        // var email = document.getElementById('email-value').value;
+        let formData = new FormData();
+        formData.append('email', email);
+                
+        let input = document.getElementsByClassName("chartjs-render-monitor")[0];
 
-        window.Email.send({
-            SecureToken : "4d112239-dab7-47ed-a2e6-1073875ac6e8",
-            To : 'guptaheet54@gmail.com',
-            From : "guptaheet55@gmail.com",
-            Subject : "This is the subject",
-            Body : "And this is the body",
-            Attachments : [
-            {
-                name : "smtpjs.png",
-                path : "https://networkprogramming.files.wordpress.com/2017/11/smtpjs.png"
-            }]
-        }).then(
-          message => alert(message)
-        );
+        const pdf = new jsPDF({ orientation: "l" });
+        pdf.addImage(input.toDataURL(), "JPEG", 15, 40, 250, 100);
+
+        formData.append("file", pdf);
+
+        for (var key of formData.entries()) {
+            console.log(key[0] + ', ' + key[1]);
+        }
+        
+        axios.post('http://127.0.0.1:8000/api/patients/send-stats-mail/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            alert("error");
+            console.log(error);
+        })
     }
 
     const filterData = (start_date, end_date, age, gender, state) => {
@@ -276,23 +287,11 @@ function LineChart(props) {
     }
 
     const div2PDF = (e) => {
-        let input = document.getElementsByClassName("left-graph-container")[0];
-        console.log(input);
-        html2canvas(input).then(canvas => {
-          const img = canvas.toDataURL("image/png");
-          const pdf = new pdfConverter("l", "pt");
+        let input = document.getElementsByClassName("chartjs-render-monitor")[0];
 
-          pdf.addImage(
-            img,
-            "png",
-            input.offsetLeft,
-            input.offsetTop,
-            input.clientWidth,
-            input.clientHeight
-          );
-
-          pdf.save("deceased_stats.pdf");
-        });
+        const pdf = new jsPDF({ orientation: "l" });
+        pdf.addImage(input.toDataURL(), "JPEG", 15, 40, 250, 100);
+        pdf.save("deceased_stats.pdf");
     };
 
 
@@ -402,17 +401,16 @@ function LineChart(props) {
                         />
 
                         <br />
-                        <label>Send graph on email</label>
-                        <TextField id="outlined-search email-value" label="Enter you email" type="search" variant="outlined" />
-                        <Button onClick={sendEmail} variant="contained" color="primary" >Submit</Button>
+                        <form  onSubmit={sendEmail} >
+                            <label>Send graph on email</label>
+                            <input type="email" required class="email-box" onChange={e => setEmail(e.target.value)} value={email} placeholder="Enter your email" id="email-value" />
+                            <br />
+                            <Button type="submit" variant="contained" color="primary" >Submit</Button>
+                        </form>
                         
                     </FormControl>
                 </Grid>
             </Grid>
-
-            
-            
-
             
         </div>
     )
